@@ -1,17 +1,19 @@
-import { Meteor } from 'meteor/meteor';
-import { Todos } from '../lib/collections.js'; // Ensure this path is correct
+import { Meteor } from "meteor/meteor";
+import { TasksCollection } from "../imports/api/TasksCollection.js";
+
+// const insertTask = (taskText) => TasksCollection.insert({ text: taskText });
+const insertTask = [];
 
 Meteor.startup(() => {
-  // Allow rules for the Todos collection
-  Todos.allow({
-    insert() {
-      return true;
-    },
-    update() {
-      return true;
-    },
-    remove() {
-      return true;
-    },
-  });
+  if (TasksCollection.find().countAsync() === 0) {
+    [
+      "First Task",
+      "Second Task",
+      "Third Task",
+      "Fourth Task",
+      "Fifth Task",
+      "Sixth Task",
+      "Seventh Task",
+    ].forEach(insertTask);
+  }
 });
