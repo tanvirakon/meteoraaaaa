@@ -2,7 +2,9 @@
 import { Template } from "meteor/templating";
 import "./main.html";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
+import anotherPage from "../imports/ui/pages/anotherPage.html";
 
+// return todo from db
 Template.mainContainer.helpers({
   async tasks() {
     return await TasksCollection.find({});
@@ -10,6 +12,7 @@ Template.mainContainer.helpers({
   },
 });
 
+// form submit
 Template.form.events({
   "submit .task-form": async (e) => {
     e.preventDefault();
@@ -23,6 +26,7 @@ Template.form.events({
   },
 });
 
+// dlt
 Template.task.events({
   "click .dlt-tdo"() {
     TasksCollection.remove(this._id);
