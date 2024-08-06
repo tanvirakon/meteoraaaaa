@@ -1,11 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
 
-const insertTask = (taskText) => TasksCollection.insert({ text: taskText });
-// const insertTask = [];
+Meteor.startup(async () => {
+  console.log("count " + (await TasksCollection.find().countAsync()));
 
-Meteor.startup(() => {
-  if (TasksCollection.find().countAsync() === 0) {
+  if ((await TasksCollection.find().countAsync()) <= 1) {
     [
       "First Task",
       "Second Task",
@@ -16,7 +15,7 @@ Meteor.startup(() => {
       "Seventh Task",
     ].forEach(insertTask);
   }
-  // if (insertTask.length <= 0) {
-  //   insertTask.push("akon");
-  // }
 });
+
+const insertTask = async (taskText) =>
+  await TasksCollection.insertAsync({ text: taskText });

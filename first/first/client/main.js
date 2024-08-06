@@ -5,7 +5,7 @@ import "./main.html";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
 
 Template.mainContainer.helpers({
-  tasks() {
-    return TasksCollection.find();
+  async tasks() {
+    return await TasksCollection.find({});
   },
 });
