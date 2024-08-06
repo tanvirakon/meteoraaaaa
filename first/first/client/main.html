@@ -6,6 +6,7 @@
 
 <body>
   {{> mainContainer }}
+  {{> form }}
 </body>
 
 
@@ -24,5 +25,12 @@
 </template>
 
 <template name="task">
-  <li>{{text}}</li>
+  <li>{{text}} <a href="#" class="dlt-tdo">x</a></li>
+</template>
+
+<template name="form">
+  <form class="task-form">
+    <input type="text" name="text" placeholder="Type to add new tasks" />
+    <button type="submit">Add Task</button>
+  </form>
 </template>

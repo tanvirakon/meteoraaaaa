@@ -2,7 +2,12 @@ import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
 
 Meteor.startup(async () => {
-  console.log("count " + (await TasksCollection.find().countAsync()));
+  const count = await TasksCollection.find().countAsync();
+  const data = await TasksCollection.find();
+  console.log("count---", count);
+  data.forEach((i, j) => {
+    console.log(i);
+  });
 
   if ((await TasksCollection.find().countAsync()) <= 1) {
     [
