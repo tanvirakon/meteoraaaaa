@@ -2,7 +2,7 @@
 import { Template } from "meteor/templating";
 import "./main.html";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
-import anotherPage from "../imports/ui/pages/anotherPage.html";
+import { Meteor } from "meteor/meteor";
 
 // return todo from db
 Template.mainContainer.helpers({
@@ -17,9 +17,9 @@ Template.form.events({
   "submit .task-form": async (e) => {
     e.preventDefault();
     let value = e.target.text.value; //how..destructating works
-    const newdd = TasksCollection.insert({
-      text: value,
-      createdAt: new Date(),
+    await Meteor.call("insertData", { value }, (err) => {
+      alert(err.error);
+      console.log("err--", err.error);
     });
     // value = " "; only eta dle hbe na. ete local "value" ta clear hy, actual dom clear krte hbe
     e.target.text.value = "";
