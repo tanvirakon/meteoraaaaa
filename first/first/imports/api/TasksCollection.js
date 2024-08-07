@@ -2,3 +2,5 @@
 import { Mongo } from "meteor/mongo";
 
 export const TasksCollection = new Mongo.Collection("todos");
+
+// schema define krle ekhane krte hbe.external pkg ase

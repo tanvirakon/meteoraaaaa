@@ -3,12 +3,21 @@ import { Template } from "meteor/templating";
 import "./main.html";
 import { TasksCollection } from "../imports/api/TasksCollection.js";
 import { Meteor } from "meteor/meteor";
+import "../imports/templates/mainContainer.html";
+import "../imports/templates/task.html";
+import "../imports/templates/form.html";
 
-// return todo from db
+// // return todo from db
+Template.mainContainer.onCreated(function () {
+  this.todoSub = this.subscribe("todoPublication");
+});
+
 Template.mainContainer.helpers({
-  async tasks() {
-    return await TasksCollection.find({});
-    // why not async..server was async
+  tasks() {
+    return TasksCollection.find();
+  },
+  isLoading() {
+    return !Template.instance().todoSub.ready();
   },
 });
 
@@ -18,8 +27,9 @@ Template.form.events({
     e.preventDefault();
     let value = e.target.text.value; //how..destructating works
     await Meteor.call("insertData", { value }, (err) => {
-      alert(err.error);
-      console.log("err--", err.error);
+      if (err) {
+        alert(err.error);
+      }
     });
     // value = " "; only eta dle hbe na. ete local "value" ta clear hy, actual dom clear krte hbe
     e.target.text.value = "";
@@ -28,7 +38,7 @@ Template.form.events({
 
 // dlt
 Template.task.events({
-  "click .dlt-tdo"() {
-    TasksCollection.remove(this._id);
+  async "click .dlt-tdo"() {
+    await Meteor.call("dltData", { _id: this._id });
   },
 });

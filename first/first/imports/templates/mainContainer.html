@@ -1,0 +1,17 @@
+<template name="mainContainer">
+    <div class="container">
+        <header>
+            <h1>Todo List</h1>
+        </header>
+        {{#if isLoading}}
+        <p>Loading...</p>
+        {{else}}
+        <ul>
+            {{#each tasks}}
+            {{>task}}
+            {{/each}}
+        </ul>
+        {{/if}}
+    </div>
+</template>
+
