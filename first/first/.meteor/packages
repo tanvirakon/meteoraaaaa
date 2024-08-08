@@ -28,3 +28,5 @@ blaze-hot # Update files using Blaze's API with HMR
 session
 
 aldeed:collection2
+matb33:collection-hooks
+ostrio:flow-router-extra

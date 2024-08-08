@@ -1,6 +1,12 @@
-// Notice that we stored the file in the imports/api directory, which is a place to store API-related code, like publications and methods. You can name this folder as you want, this is just an optional way to name it.
 import { Mongo } from "meteor/mongo";
+import SimpleSchema from "simpl-schema";
 
 export const TasksCollection = new Mongo.Collection("todos");
 
-// schema define krle ekhane krte hbe.external pkg ase
+const TaskSchema = new SimpleSchema({
+  text: { type: String, required: true, min: 1 },
+  //   khali box o empty hisebe chle ase. tai minimum string lenght 1 kre dlm..
+  createdAt: Date,
+});
+
+TasksCollection.schema = TaskSchema;
