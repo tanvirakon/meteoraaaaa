@@ -1,0 +1,11 @@
+<template name="appLayout">
+    <main>
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="/about">about</a></li>
+        </ul>
+    </main>
+    <div class="main">
+        {{>Template.dynamic template=content}}
+    </div>
+</template>
