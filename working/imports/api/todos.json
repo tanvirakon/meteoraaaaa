@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Buy groceries",
+    "body": "Need to buy milk, bread, and eggs from the supermarket.",
+    "createdAt": "2024-08-01T08:30:00Z"
+  },
+  {
+    "title": "Finish project report",
+    "body": "Complete the final report for the project and send it to the manager.",
+    "createdAt": "2024-08-02T10:00:00Z"
+  },
+  {
+    "title": "Plan weekend trip",
+    "body": "Research places to visit and book a hotel for the weekend getaway.",
+    "createdAt": "2024-08-03T14:15:00Z"
+  },
+  {
+    "title": "Workout session",
+    "body": "Attend the evening workout session at the gym.",
+    "createdAt": "2024-08-04T18:00:00Z"
+  },
+  {
+    "title": "Call the plumber",
+    "body": "Schedule an appointment with the plumber to fix the leaky faucet.",
+    "createdAt": "2024-08-05T09:45:00Z"
+  },
+  {
+    "title": "Call the plumber",
+    "body": "Schedule an appointment with the plumber to fix the leaky faucet.",
+    "createdAt": "2024-08-05T09:45:00Z"
+  }
+]

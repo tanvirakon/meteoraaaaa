@@ -1,0 +1,24 @@
+<template name="postDetails">
+    <div class="postDetails">
+        <h1>title: {{post.title}}</h1>
+        <p><span style="font-weight: bold;">id:</span> {{post._id}}</p>
+        <p><span style="font-weight: bold;">body:</span> {{post.body}}</p>
+        <p><span style="font-weight: bold;">createdAt:</span> {{post.createdAt}}</p>
+    </div>
+    <form class="comment_section" data-post-id={{post._id}}>
+        <input type="text" name="comment" id="comment" placeholder="Add your comment">
+        <button class="btn">comment</button>
+    </form>
+    <!-- comments render -->
+    <div class="render_comments">
+        <p>Comments:</p>
+        <ul>
+            {{#each comments}}
+            <li> {{commentText}}
+                <button class="likeBtn" data-comment-id="{{_id}}">like</button>
+                {{like}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</template>
