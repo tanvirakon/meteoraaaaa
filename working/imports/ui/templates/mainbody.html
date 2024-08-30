@@ -3,5 +3,22 @@
     {{#each posts}}
     {{> post}}
     {{/each}}
+
+    <!-- pgination 1 -->
+    <!-- <button class="load-more">More</button> -->
+
+    <!-- pagination 2 -->
+    <!-- <ul class="pagination">
+      {{#each totalPages}}
+      <a href="#" class="page-link" data-page="{{this}}">{{this}}</a>
+      {{/each}}
+    </ul> -->
+    <br>
+    {{#if isLoading}}
+    <div class="loading-indicator">Loading...</div>
+    {{/if}}
+
+
+
   </div>
 </template>
