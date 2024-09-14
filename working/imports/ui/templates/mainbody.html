@@ -1,24 +1,62 @@
+<!-- 
 <template name="mainbody">
   <div class="loop-through">
-    {{#each posts}}
+  {{#each posts}}
     {{> post}}
     {{/each}}
 
-    <!-- pgination 1 -->
-    <!-- <button class="load-more">More</button> -->
+  <!- - pgination 1 - ->
+  <!- - <button class="load-more">More</button> - ->
 
-    <!-- pagination 2 -->
-    <!-- <ul class="pagination">
+  <!- - pagination 2 - ->
+  <!- - <ul class="pagination">
       {{#each totalPages}}
       <a href="#" class="page-link" data-page="{{this}}">{{this}}</a>
       {{/each}}
-    </ul> -->
-    <br>
-    {{#if isLoading}}
-    <div class="loading-indicator">Loading...</div>
-    {{/if}}
+    </ul> - ->
 
+  <!- - // // //1, 2 , 3 pagination with query params - ->
+  <!- - <div class="post-list">
+    {{#each posts}}
+    {{> post}} 
+    {{/each}}
+  </div> - ->
+
+  <!- - <ul class="pagination">
+    {{#each totalPages}}
+    <li class="{{isActivePage this}}">
+      <a href="?page={{this}}&limit={{../limit.get}}" class="page-link" data-page="{{this}}">
+        {{this}}
+      </a>
+    </li>
+    {{/each}}
+  </ul> - ->
+  <!- - infinite - ->
+  <br>
+  {{#if isLoading}}
+  <div class="loading-indicator">Loading...</div>
+  {{/if}}
+
+
+  
 
 
   </div>
+</template> -->
+<template name="mainbody">
+  <!-- Task List -->
+  <div class="task-list">
+    {{#each posts}}
+    {{> post}}
+    {{/each}}
+  </div>
+
+  <!-- Pagination Links -->
+  <ul class="pagination">
+    {{#each totalPages}}
+      <li class="page-item {{isActivePage this}}">
+        <a href="#" class="page-link" data-page="{{this}}">{{this}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </template>

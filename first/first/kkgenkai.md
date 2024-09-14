@@ -1,3 +1,6 @@
+> [!NOTE]
+> subscribe,loading state,hook
+
 notion link : [notion](https://tasty-van-095.notion.site/meteor-js-ea11b45a47354156899d8681562b72a1?pvs=4)
 
 1. do we still need usetracker to update ui when data changes in bg?!

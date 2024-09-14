@@ -26,6 +26,13 @@ import CommentCollection from "../common/commentDb.js";
 import "../imports/startup/server";
 import "../common/taskCountMethod.js";
 
-Meteor.publish("tasks", function (limit) {
-  return TasksCollection.find({}, { limit: limit });
+// Meteor.publish("tasks", function (limit) {
+//   return TasksCollection.find({}, { limit: limit });
+// });
+// Meteor.publish("tasks", function (page, limit) {
+//   return TasksCollection.find({}, { skip: (page - 1) * limit, limit: limit });
+// });
+Meteor.publish("tasks", function (limit, skip) {
+  const data = TasksCollection.find({ skip: skip, limit: limit });
+  return data;
 });

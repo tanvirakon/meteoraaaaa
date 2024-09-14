@@ -21,8 +21,6 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
-
-    // Insert the document
   },
 
   //   dlt from db

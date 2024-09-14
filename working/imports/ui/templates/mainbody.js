@@ -1,4 +1,4 @@
-//// btn show more pagination
+// btn show more pagination
 // import { Template } from "meteor/templating";
 // import TasksCollection from "../../../common/postDb.js";
 // import { ReactiveVar } from "meteor/reactive-var";
@@ -87,86 +87,199 @@
 //   },
 // });
 
-// infinite pagination
+// // //1, 2 , 3 pagination with query params
+// import { Template } from "meteor/templating";
+// import { ReactiveVar } from "meteor/reactive-var";
+// import TasksCollection from "../../../common/postDb.js";
+// import { FlowRouter } from "meteor/kadira:flow-router";
+
+// Template.mainbody.onCreated(function () {
+//   // Get page and limit from the URL query parameters or set default values
+//   const page = parseInt(FlowRouter.getQueryParam("page")) || 1;
+//   const limit = parseInt(FlowRouter.getQueryParam("limit")) || 10;
+
+//   // Initialize reactive variables
+//   this.currentPage = new ReactiveVar(page);
+//   this.limit = new ReactiveVar(limit);
+//   this.totalTasks = new ReactiveVar(0);
+
+//   // Reactively subscribe to tasks based on current page and limit
+//   this.autorun(() => {
+//     const skip = (this.currentPage.get() - 1) * this.limit.get();
+
+//     // Subscribe to the tasks publication
+//     this.subscribe("tasks", this.limit.get(), skip);
+
+//     // Fetch the total task count
+//     Meteor.call("getTotalTasksCount", (error, result) => {
+//       if (!error) {
+//         this.totalTasks.set(result);
+//       }
+//     });
+//   });
+// });
+
+// Template.mainbody.helpers({
+//   posts() {
+//     // Fetch tasks based on the current limit
+//     return TasksCollection.find(
+//       {},
+//       { limit: Template.instance().limit.get() }
+//     ).fetch();
+//   },
+//   totalPages() {
+//     // Calculate the total number of pages
+//     const totalTasks = Template.instance().totalTasks.get();
+//     const limit = Template.instance().limit.get();
+//     const totalPages = Math.ceil(totalTasks / limit);
+//     return Array.from({ length: totalPages }, (_, i) => i + 1);
+//   },
+//   isActivePage(page) {
+//     // Return 'active' class if the page is the current page
+//     return Template.instance().currentPage.get() === page ? "active" : "";
+//   },
+// });
+
+// Template.mainbody.events({
+//   "click .page-link"(event, instance) {
+//     event.preventDefault();
+//     const page = parseInt(event.currentTarget.dataset.page, 10);
+//     // Update the URL with the new page number
+//     FlowRouter.setQueryParams({ page });
+
+//     // Update the current page reactive variable
+//     instance.currentPage.set(page);
+//     console.log(
+//       "ah",
+//       page,
+//       FlowRouter.getQueryParam("page"),
+//       FlowRouter.setQueryParams({ page: page })
+//     );
+//   },
+// });
+
 import { Template } from "meteor/templating";
-import TasksCollection from "../../../common/postDb.js";
 import { ReactiveVar } from "meteor/reactive-var";
+import TasksCollection from "../../../common/postDb.js";
+import { FlowRouter } from "meteor/kadira:flow-router";
 
 Template.mainbody.onCreated(function () {
-  this.limit = new ReactiveVar(15); // Show 15 todos per page
-  this.isLoading = new ReactiveVar(false);
-  this.autorun(() => {
-    console.log(
-      $(window).scrollTop(),
-      $(window).height(),
-      $(document).height()
-    );
+  // Read the initial page and limit from the URL using FlowRouter
+  FlowRouter.watchPathChange();
+  let page = parseInt(FlowRouter.getQueryParam("page")) || 1;
+  let limit = parseInt(FlowRouter.getQueryParam("limit")) || 10;
 
-    const limit = this.limit.get(); //15
-    this.subscribe("tasks", limit);
+  this.currentPage = new ReactiveVar(page);
+  this.limit = new ReactiveVar(limit);
+  this.totalTasks = new ReactiveVar(0);
+
+  // Automatically run when currentPage or limit changes
+  this.autorun(() => {
+    const skip = (this.currentPage.get() - 1) * this.limit.get();
+    page = parseInt(FlowRouter.getQueryParam("page")) || 1;
+     limit = parseInt(FlowRouter.getQueryParam("limit")) || 10;
+    console.log(FlowRouter.getQueryParam("page"));
+
+    this.subscribe("tasks", this.limit.get(), skip);
+    Meteor.call("getTotalTasksCount", (error, result) => {
+      if (!error) {
+        this.totalTasks.set(result);
+      }
+    });
   });
 });
 
 Template.mainbody.helpers({
   posts() {
-    return TasksCollection.find(
-      {},
-      { limit: Template.instance().limit.get() }
-    ).fetch();
+    const instance = Template.instance();
+    const limit = instance.limit.get();
+    const skip = (instance.currentPage.get() - 1) * limit; // Calculate skip based on current page
+
+    // Fetch tasks with both limit and skip
+    return TasksCollection.find({}, { limit, skip }).fetch();
   },
-  isLoading() {
-    return Template.instance().isLoading.get();
+  totalPages() {
+    const totalTasks = Template.instance().totalTasks.get();
+    const limit = Template.instance().limit.get();
+    const totalPages = Math.ceil(totalTasks / limit);
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  },
+  isActivePage(page) {
+    return Template.instance().currentPage.get() === page ? "active" : "";
   },
 });
 
+Template.mainbody.events({
+  "click .page-link"(event, instance) {
+    event.preventDefault(); // Prevent default anchor behavior
+
+    const page = parseInt(event.target.dataset.page, 10);
+    const limit = instance.limit.get();
+
+    // Update the URL using history.pushState
+    const newUrl = `/?page=${page}&limit=${limit}`;
+    history.pushState(null, null, newUrl);
+
+    // Update the currentPage ReactiveVar
+    instance.currentPage.set(page);
+  },
+});
+
+// infinite pagination
+// import { Template } from "meteor/templating";
+// import TasksCollection from "../../../common/postDb.js";
+// import { ReactiveVar } from "meteor/reactive-var";
+
+// Template.mainbody.onCreated(function () {
+//   this.limit = new ReactiveVar(15); // Show 15 todos per page
+//   this.isLoading = new ReactiveVar(false);
+//   this.autorun(() => {
+//     const limit = this.limit.get(); //15
+//     this.subscribe("tasks", limit);
+//   });
+// });
+
+// Template.mainbody.helpers({
+//   posts() {
+//     return TasksCollection.find(
+//       {},
+//       { limit: Template.instance().limit.get() }
+//     ).fetch();
+//   },
+//   isLoading() {
+//     return Template.instance().isLoading.get();
+//   },
+// });
 // Template.mainbody.onRendered(function () {
 //   const instance = this;
 
-//   // Listener for scroll events
 //   $(window).on("scroll", function () {
-//     // Check if scrolled near bottom of the page
 //     if (
-//       $(window).scrollTop() + //returns the current vertical position of the scroll bar. It tells you how far the user has scrolled down.
-//         $(window).height() > // height of the browser's viewport
-//       $(document).height() - 100 // total height of the entire document (the full webpage, including the parts that are not visible).
+//       $(window).scrollTop() + $(window).height() >
+//       $(document).height() - 100
 //     ) {
-//       // Load more posts when near bottom
-//       const currentLimit = instance.limit.get();
-//       instance.limit.set(currentLimit + 10); // Increase by 10 or any number you want
+//       if (!instance.isLoading.get()) {
+//         instance.isLoading.set(true);
+//         const currentLimit = instance.limit.get();
+// console.log(currentLimit, TasksCollection.find().count());
+//         if (!(currentLimit > TasksCollection.find().count())) {
+//           //data fetch over hye gle r loading dtate tkbe na
+//           setTimeout(() => {
+//             instance.limit.set(currentLimit + 10);
+//             instance.subscribe("tasks", instance.limit.get(), {
+//               onReady: function () {
+//                 instance.isLoading.set(false); // Set loading to false once data is ready
+//               },
+//             });
+//           }, 1000); // 2-second delay
+//         } else {
+//           instance.isLoading.set(false);
+//         }
+//       }
 //     }
 //   });
 // });
 
-//showing with 1 sec delay
-Template.mainbody.onRendered(function () {
-  const instance = this;
-
-  // Listener for scroll events
-  $(window).on("scroll", function () {
-    if (
-      $(window).scrollTop() + $(window).height() >
-      $(document).height() - 100
-    ) {
-      if (!instance.isLoading.get()) {
-        instance.isLoading.set(true); // Set loading to true
-
-        // Introduce a delay of 2 seconds before loading more data
-        setTimeout(() => {
-          const currentLimit = instance.limit.get();
-          instance.limit.set(currentLimit + 10); // Increase by 10 or any number you want
-
-          // Subscribe to tasks with the updated limit
-          instance.subscribe("tasks", instance.limit.get(), {
-            onReady: function () {
-              instance.isLoading.set(false); // Set loading to false once data is ready
-            },
-          });
-        }, 1000); // 2-second delay
-      }
-    }
-  });
-});
-
-Template.mainbody.onDestroyed(function () {
-  $(window).off("scroll"); // Remove the scroll event listener
-});
+// Template.mainbody.onDestroyed(function () {
+//   $(window).off("scroll"); // Remove the scroll event listener
+// });

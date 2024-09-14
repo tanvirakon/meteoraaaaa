@@ -60,7 +60,6 @@ mongo-id@1.0.9
 npm-mongo@4.17.3
 observe-sequence@2.0.0-rc300.2
 ordered-dict@1.2.0
-ostrio:flow-router-extra@2.11.0
 promise@1.0.0
 raix:eventemitter@1.0.0
 random@1.2.2
